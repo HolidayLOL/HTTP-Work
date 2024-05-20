@@ -10,16 +10,7 @@ package org.example.webprog26;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
-    private static final OnDataLoadedListener onDataLoadedListener = new OnDataLoadedListener() {
-        @Override
-        public void onDataLoaded(String data) {
-            System.out.println("onDataLoaded():\n" + data);
-
-            DataUploader usersUploader = new UserUploader();
-            usersUploader.uploadData("https://jsonplaceholder.typicode.com/users", data, onDataUploadedListener);
-        }
-    };
-
+    //Cannot be converted to lambda expression
     private static final OnDataUploadedListener onDataUploadedListener = new OnDataUploadedListener() {
         @Override
         public void onSuccess() {
@@ -30,6 +21,14 @@ public class Main {
         public void onFailure(String errorMessage) {
             System.out.println("Data wasn't uploaded! An error occurred: " + errorMessage);
         }
+    };
+
+    //Converted to lambda expression as a functional interface
+    private static final OnDataLoadedListener onDataLoadedListener = data -> {
+        System.out.println("onDataLoaded():\n" + data);
+
+        DataUploader usersUploader = new UserUploader();
+        usersUploader.uploadData("https://jsonplaceholder.typicode.com/users", data, onDataUploadedListener);
     };
 
     public static void main(String[] args) {
