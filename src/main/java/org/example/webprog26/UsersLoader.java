@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 
-public class UsersLoader {
+public class UsersLoader implements DataLoader {
 
-    public String getLoadedUsers() {
+    @Override
+    public String loadData(String urlString) {
         HttpURLConnection connection = null;
         try {
-            URL url = new URL("https://jsonplaceholder.typicode.com/users");
-                    connection = (HttpURLConnection) url.openConnection();
+            URL url = new URL(urlString);
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
 

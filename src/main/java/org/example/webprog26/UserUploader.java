@@ -4,9 +4,10 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class UserUploader {
+public class UserUploader implements DataUploader {
 
-    public void uploadUsers(String usersJson) {
+    @Override
+    public void uploadData(String urlString, String data) {
         HttpURLConnection connection = null;
         try {
             URL url = new URL("https://jsonplaceholder.typicode.com/posts");
@@ -19,7 +20,7 @@ public class UserUploader {
             connection.setReadTimeout(5000);
             OutputStream stream = connection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
-            bufferedWriter.write(usersJson);
+            bufferedWriter.write(data);
             bufferedWriter.flush();
             bufferedWriter.close();
             stream.close();

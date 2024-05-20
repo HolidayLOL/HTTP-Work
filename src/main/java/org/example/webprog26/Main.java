@@ -6,12 +6,12 @@ package org.example.webprog26;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        UsersLoader usersLoader = new UsersLoader();
-        final String usersJson = usersLoader.getLoadedUsers();
+        DataLoader usersLoader = new UsersLoader();
+        final String usersJson = usersLoader.loadData("https://jsonplaceholder.typicode.com/users");
 
         System.out.println("usersJson:\n" + usersJson);
 
-        UserUploader userUploader = new UserUploader();
-        userUploader.uploadUsers(usersJson);
+        DataUploader usersUploader = new UserUploader();
+        usersUploader.uploadData("https://jsonplaceholder.typicode.com/users", usersJson);
     }
 }
