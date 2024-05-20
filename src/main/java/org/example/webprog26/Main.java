@@ -14,21 +14,33 @@ public class Main {
     private static final OnDataUploadedListener onDataUploadedListener = new OnDataUploadedListener() {
         @Override
         public void onSuccess() {
+            System.out.println("We are getting result of data uploading on thread: " + Thread.currentThread().getName());
             System.out.println("Data uploaded successfully");
         }
 
         @Override
         public void onFailure(String errorMessage) {
+            System.out.println("We are getting result of data uploading on thread: " + Thread.currentThread().getName());
             System.out.println("Data wasn't uploaded! An error occurred: " + errorMessage);
         }
     };
 
-    //Converted to lambda expression as a functional interface
-    private static final OnDataLoadedListener onDataLoadedListener = data -> {
-        System.out.println("onDataLoaded():\n" + data);
+    //Not a functional interface anymore
+    private static final OnDataLoadedListener onDataLoadedListener = new OnDataLoadedListener() {
+        @Override
+        public void onDataLoaded(String data) {
+            System.out.println("We are getting result of data loading on thread: " + Thread.currentThread().getName());
+            System.out.println("onDataLoaded():\n" + data);
 
-        DataUploader usersUploader = new UserUploader();
-        usersUploader.uploadData("https://jsonplaceholder.typicode.com/users", data, onDataUploadedListener);
+            DataUploader usersUploader = new UserUploader();
+            usersUploader.uploadData("https://jsonplaceholder.typicode.com/users", data, onDataUploadedListener);
+        }
+
+        @Override
+        public void onFailure(String errorMessage) {
+            System.out.println("We are getting result of data loading on thread: " + Thread.currentThread().getName());
+            System.out.println("Data wasn't loaded: An error occurred: " + errorMessage);
+        }
     };
 
     public static void main(String[] args) {
