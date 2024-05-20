@@ -7,7 +7,7 @@ import java.net.URL;
 public class UserUploader implements DataUploader {
 
     @Override
-    public void uploadData(String urlString, String data) {
+    public void uploadData(String urlString, String data, OnDataUploadedListener listener) {
         HttpURLConnection connection = null;
         try {
             URL url = new URL("https://jsonplaceholder.typicode.com/posts");
@@ -25,12 +25,19 @@ public class UserUploader implements DataUploader {
             bufferedWriter.close();
             stream.close();
 
-            System.out.println(connection.getResponseCode());
-            System.out.println(connection.getResponseMessage());
+            if (listener != null) {
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
+                    listener.onSuccess();
+                } else {
+                    listener.onFailure(connection.getResponseMessage());
+                }
+            }
 
             connection.disconnect();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (listener != null) {
+                listener.onFailure(e.getMessage());
+            }
         } finally {
             if (connection != null) {
                 connection.disconnect();

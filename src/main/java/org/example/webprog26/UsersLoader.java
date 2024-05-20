@@ -8,7 +8,7 @@ import java.net.*;
 public class UsersLoader implements DataLoader {
 
     @Override
-    public String loadData(String urlString) {
+    public void loadData(String urlString, OnDataLoadedListener listener) {
         HttpURLConnection connection = null;
         try {
             URL url = new URL(urlString);
@@ -28,7 +28,10 @@ public class UsersLoader implements DataLoader {
 
                 System.out.println(stringBuilder.length() > 0 ? stringBuilder.toString() : "null");
 
-                return stringBuilder.toString();
+                //Using callback
+                if (listener != null) {
+                    listener.onDataLoaded(stringBuilder.toString());
+                }
             }
 
         } catch (IOException e) {
@@ -38,6 +41,5 @@ public class UsersLoader implements DataLoader {
                 connection.disconnect();
             }
         }
-        return null;
     }
 }
